@@ -1,5 +1,7 @@
+
+
 # Amahi Home Server
-# Copyright (C) 2007-2013 Amahi
+# Copyright (C) 2007-2013 Amahi Team
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License v3
@@ -14,9 +16,8 @@
 # License along with this program; if not, write to the Amahi
 # team at http://www.amahi.org/ under "Contact Us."
 
-# Filters added to this controller apply to all controllers in the application.
-# Likewise, all the methods added will be available for all controllers.
+require 'yaml'
+require "poolings/version"
+require "poolings/engine"
+require "poolings/configuration"
 
-class ApplicationController < ActionController::Base
-	helper Poolings::ApplicationHelper
-end

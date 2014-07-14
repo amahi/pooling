@@ -1,3 +1,3 @@
-Pooling::Engine.routes.draw do
-	root :to => 'tab#index'
+Poolings::Engine.routes.draw do
+	root :to => 'poolings#index'
 end

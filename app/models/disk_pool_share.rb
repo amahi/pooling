@@ -13,10 +13,17 @@
 # You should have received a copy of the GNU General Public
 # License along with this program; if not, write to the Amahi
 # team at http://www.amahi.org/ under "Contact Us."
+require 'fileutils'
+class DiskPoolShare < ActiveRecord::Base
+	belongs_to :share
 
-# Filters added to this controller apply to all controllers in the application.
-# Likewise, all the methods added will be available for all controllers.
+	def toggle_pooling
+		self.pooling = !self.pooling
+		self.save!
+	end
 
-class ApplicationController < ActionController::Base
-	helper Poolings::ApplicationHelper
+	def update_extra_copies(value)
+		self.extra_copies =  value
+		self.save!
+	end
 end

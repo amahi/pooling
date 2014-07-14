@@ -15,30 +15,30 @@
 # team at http://www.amahi.org/ under "Contact Us."
 
 require 'yaml'
-require "pooling/engine"
 
-module Pooling
-	class Lib
+# Driver for Greyhole http://greyhole.pommepause.com/
+module Poolings
+	class Configuration
 		SUFFIX = "gh"
 		USE_DOT_FILE = ".greyhole_uses_this"
 		GH_DEFAULTS = { "delete_moves_to_attic" => "true",
-			"email_to" => "root",
-			"dir_selection_algorithm" => "most_available_space",
-			"db_engine" => "mysql",
-			#"db_path" => "/var/cache/greyhole.sqlite",
-			"db_host" => "localhost", "db_user" => "greyhole", "db_pass" => "greyhole", "db_name" => "greyhole",
-			"sticky_files" => "Music/",
-			"greyhole_log_file" => "/var/log/greyhole.log",
-			"df_cache_time" => "15",
-			"balance_modified_files" => "false", "log_memory_usage" => "false",
-			"other" => nil,
-			# FIXME-cpg: change from DEBUG at some point - added 4 '10
-			"log_level" => "DEBUG" }
+				"email_to" => "root",
+				"dir_selection_algorithm" => "most_available_space",
+				"db_engine" => "mysql",
+				#"db_path" => "/var/cache/greyhole.sqlite",
+				"db_host" => "localhost", "db_user" => "greyhole", "db_pass" => "greyhole", "db_name" => "greyhole",
+				"sticky_files" => "Music/",
+				"greyhole_log_file" => "/var/log/greyhole.log",
+				"df_cache_time" => "15",
+				"balance_modified_files" => "false", "log_memory_usage" => "false",
+				"other" => nil,
+				# FIXME-cpg: change from DEBUG at some point - added 4 '10
+				"log_level" => "DEBUG" }
 		GH_DEFAULTS_FILE = "#{Rails.root}/config/greyhole.yml"
 
 		# generate and write GH conf file
 		def self.save_conf_file(partitions, shares)
-			ghconf = "/tmp/greyhole-%d.%d" % [$$, rand(99999)]
+			ghconf = "#{Rails.root}/tmp/greyhole-%d.%d" % [$$, rand(99999)]
 			s = File.new ghconf, "w"
 			s.write(self.greyhole_conf(partitions, shares))
 			s.flush
@@ -54,8 +54,8 @@ module Pooling
 					c.submit("touch \"#{ppath}/#{USE_DOT_FILE}\"")
 				end
 			end
-			# reload greyhole
-			c.submit("service greyhole condrestart")
+			# reload greyhole, if it was running
+			c.submit("systemctl condrestart greyhole.service")
 			c.execute
 		end
 
@@ -63,7 +63,7 @@ module Pooling
 			File.exist? "/etc/greyhole.conf"
 		end
 
-		private
+	private
 
 		# Generate GH conf file
 		def self.greyhole_conf(partitions, shares)
@@ -95,7 +95,7 @@ module Pooling
 			begin
 				gh.merge!(YAML::load(File.open(GH_DEFAULTS_FILE))) if File.exists?(GH_DEFAULTS_FILE)
 			rescue
-				# shh - fail silently instead of crash
+				# shh - fail silently instead of crashing
 			end
 			# mysql settings
 			mysql = ['db_host', 'db_user', 'db_pass', 'db_name'].map{|s| "#{s} = #{gh[s]}" }.join("\n")
@@ -103,11 +103,11 @@ module Pooling
 				"# Any manual changes WILL BE OVERWRITTEN!",
 				"# Set the defaults (carefully) in #{GH_DEFAULTS_FILE}",
 				"db_engine = #{gh['db_engine']}",
-			((gh['db_engine'] == 'sqlite') ? "db_path = #{gh['db_path']}" : mysql)]
+				((gh['db_engine'] == 'sqlite') ? "db_path = #{gh['db_path']}" : mysql)]
 			# rest of settings
 			rest = ["balance_modified_files", "email_to", "greyhole_log_file", "log_level",
 				"log_memory_usage", "dir_selection_algorithm", "df_cache_time",
-			"delete_moves_to_attic"].map{|s| "#{s} = #{gh[s]}" }
+				"delete_moves_to_attic"].map{|s| "#{s} = #{gh[s]}" }
 			settings << rest
 			settings << sticky_files_to_s(gh["sticky_files"])
 			if gh['other']
