@@ -16,7 +16,6 @@
 # License along with this program; if not, write to the Amahi
 # team at http://www.amahi.org/ under "Contact Us."
 
-require 'yaml'
 require "poolings/version"
 require "poolings/engine"
 require "poolings/configuration"

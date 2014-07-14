@@ -11,7 +11,18 @@ class PoolingsController < ApplicationController
 			! @partitions.select{ |p| p[:path] == dpp.path }.empty?
 		end
 	end
+	def shares
+		@shares = Share.all
+		@pooled_shares = []
+		@shares.each do |share|
+			if DiskPoolShare.where(:share_id=>share.id).first
+				@pooled_shares << DiskPoolShare.where(:share_id=>share.id).first
+			else
+				@pooled_shares << nil
+			end
+		end
 
+	end
 #	def settings
 #		# do the settings page here
 #	end
