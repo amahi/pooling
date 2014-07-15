@@ -1,0 +1,13 @@
+- checked = false
+- checked = pool.pooling if pool
+td.centered = share.name
+td.centered
+	= tag "input", id: "pooling_share_#{share.id}", class: "remote-check", type:"checkbox", checked: checked, data: { remote: true, url: poolings_engine.toggle_share_pooling_path(:id => share.id)}
+	=spinner
+td.centered
+	-if @partition_count > 1 and checked
+        -num_copies_list = options_for_select(@selection, pool.extra_copies)
+        = select_tag 'extra_copies', num_copies_list,
+            data: { remote: true, url: poolings_engine.update_extra_copies_path(:id => share.id)},
+            class: 'remote-select form-control'
+        = spinner

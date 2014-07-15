@@ -17,7 +17,7 @@ require 'fileutils'
 class DiskPoolShare < ActiveRecord::Base
 	belongs_to :share
 
-	def toggle_pooling
+	def toggle_pooling!
 		self.pooling = !self.pooling
 		self.save!
 	end
@@ -25,5 +25,9 @@ class DiskPoolShare < ActiveRecord::Base
 	def update_extra_copies(value)
 		self.extra_copies =  value
 		self.save!
+	end
+
+	def self.in_disk_pool
+		shares =  DiskPoolShare.where("extra_copies>0").map{|pool| pool.share}
 	end
 end
