@@ -21,8 +21,24 @@ class PoolingsController < ApplicationController
 				@pooled_shares << nil
 			end
 		end
-
+		@partition_count = DiskPoolPartition.count
+		if @partition_count > 1
+			@selection = [["-", 1]]
+			max = @partition_count - 1
+			1.upto(max) do |i|
+				@selection += [["#{i}", i+1]]
+			end
+			# Last choice is for all drives, present and future! FIXME - put it in a constant/symbol
+			@selection += [["Always Max", 999]]
+		end
 	end
+	def update_extra_copies
+	end
+
+	def toggle_share_pooling
+	end
+
+
 #	def settings
 #		# do the settings page here
 #	end

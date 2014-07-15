@@ -1,0 +1,22 @@
+-if @partition_count > 0 and Poolings::Configuration.enabled?
+	.settings-table#shares-pool-table
+		table.settings.table
+	      thead
+	        tr
+	          th.settings-col1.dbbackup-col1= t 'shares'
+	          th.settings-col1.dbbackup-col2= t 'disk_pooling'
+	          th.settings-col1.dbbackup-col2= t 'disk_pool_copies'
+			-@shares.each do |share,index|
+				tr
+					td = share.name
+					td = simple_remote_checkbox :id => "pooling_share_#{share.id}",
+				                                 :url => poolings_engine.toggle_share_pooling_path(:id => share.id),
+				                                 :label => "",
+				                                 :checked => @pooled_shares.pooling
+				    td
+				    	-if @partition_count > 1
+					    	= simple_remote_select id: "copies_shares_#{share.id}",
+			                                   name: "extra_copies",
+			                                   collection: @selection,
+			                                   url: poolings_engine.update_extra_copies_path,
+			                                   selected: @pooled_shares.extra_copies
