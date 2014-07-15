@@ -79,7 +79,15 @@ module Poolings
 		end
 
 		def self.share_conf(s)
-			"num_copies[#{s[:comment]}] = #{s[:disk_pool_copies]}\n"
+			Rails.logger.error "i am here"
+			name = s.name
+			pool = DiskPoolShare.where(:share_id=>s.id).first
+			if pool
+				copies = pool.extra_copies
+			else
+				copies = 0
+			end
+			"num_copies[#{name}] = #{copies}\n"
 		end
 
 		def self.partition_conf(p)
