@@ -20,11 +20,13 @@ class DiskPoolShare < ActiveRecord::Base
 	def toggle_pooling!
 		self.pooling = !self.pooling
 		self.save!
+		Poolings::Configuration.save_conf_file(DiskPoolPartition.all, DiskPoolShare.in_disk_pool)
 	end
 
 	def update_extra_copies(value)
 		self.extra_copies =  value
 		self.save!
+		Poolings::Configuration.save_conf_file(DiskPoolPartition.all, DiskPoolShare.in_disk_pool)
 	end
 
 	def self.in_disk_pool
