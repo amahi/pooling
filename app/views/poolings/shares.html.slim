@@ -8,4 +8,5 @@
 		          th.settings-col1.dbbackup-col1.centered= t 'disk_pool_copies'
 			tbody
 				-@shares.each_with_index do |share,index|
-					tr[id="pool-share-#{share.id}"] = render :partial => 'disk_pool_share', :locals => {share:share, pool: @pooled_shares[index]}
+					tr[id="pool_share_#{share.id}"]
+						= render :partial => 'disk_pool_share', :locals => {share:share, pool: @pooled_shares[index]}

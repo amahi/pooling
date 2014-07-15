@@ -2,7 +2,7 @@
 - checked = pool.pooling if pool
 td.centered = share.name
 td.centered
-	= tag "input", id: "pooling_share_#{share.id}", class: "remote-check", type:"checkbox", checked: checked, data: { remote: true, url: poolings_engine.toggle_share_pooling_path(:id => share.id)}
+	= tag "input", id: "share_#{share.id}", class: "remote-check pool-share", type:"checkbox", checked: checked, data: { remote: true, url: poolings_engine.toggle_share_pooling_path(:id => share.id)}
 	=spinner
 td.centered
 	-if @partition_count > 1 and checked
