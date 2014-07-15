@@ -1,8 +1,8 @@
 - id="part-#{path}"
 - disabled = (!Poolings::Configuration.enabled?) || path =~ /^\/media/
 - checked = checked && !disabled
-span[id="#{id}"]
-  - if disabled
-    = check_box_tag "cb-#{id}", '', false, :disabled => true
-  - else # FIXME!!
-    = check_box_tag "cb-#{id}", '', false, :disabled => false
+=  simple_remote_checkbox :id => "cb-#{id}",
+                         :url => "",
+                         :label => "",
+                         :disabled=>disabled,
+                         :checked => checked
