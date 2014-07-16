@@ -30,6 +30,16 @@ class DiskPoolShare < ActiveRecord::Base
 	end
 
 	def self.in_disk_pool
-		shares =  DiskPoolShare.where("extra_copies>0").map{|pool| pool.share}
+		share_ids = DiskPoolShare.where("extra_copies>0").map{|pool| pool.share_id}
+		shares = []
+		share_ids.each do |share_id|
+			share = Share.where(:id=>share_id).first
+			if share
+				shares << share
+			else
+				DiskPoolShare.where(:share_id=>share_id).first.destroy!
+			end
+		end
+		shares
 	end
 end
