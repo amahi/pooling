@@ -10,3 +10,8 @@
 				-@shares.each_with_index do |share,index|
 					tr[id="pool_share_#{share.id}"]
 						= render :partial => 'disk_pool_share', :locals => {share:share, pool: @pooled_shares[index]}
+- else
+	.settings-table#shares-pool-table
+		div align="center"
+		  div align="left"
+		    h2= t 'disk_pooling_no_partitions'
