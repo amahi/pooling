@@ -1,11 +1,11 @@
 $:.push File.expand_path("../lib", __FILE__)
 
 # Maintain your gem's version:
-require "poolings/version"
+require "pooling/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "poolings"
+  s.name        = "pooling"
   s.version     = Pooling::VERSION
    s.authors     = ["Carlos Puchol"]
   s.email       = ["cpg+git@amahi.org"]

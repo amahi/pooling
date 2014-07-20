@@ -1,4 +1,4 @@
-class PoolingsController < ApplicationController
+class PoolingController < ApplicationController
 	before_filter :admin_required
 
 	DP_MIN_FREE_DEFAULT = 10
@@ -32,7 +32,7 @@ class PoolingsController < ApplicationController
 		pool = DiskPoolShare.where(:share_id=>share.id).first
 		pool.update_extra_copies(copies)
 		selection
-		render :partial => 'poolings/disk_pool_share', :locals => { :share => share , :pool => pool }
+		render :partial => 'pooling/disk_pool_share', :locals => { :share => share , :pool => pool }
 	end
 
 	def toggle_share_pooling
@@ -48,16 +48,16 @@ class PoolingsController < ApplicationController
 			pool.toggle_pooling!
 		end
 		selection
-		render :partial => 'poolings/disk_pool_share', :locals => { :share => share , :pool => pool }
+		render :partial => 'pooling/disk_pool_share', :locals => { :share => share , :pool => pool }
 	end
 
 	def toggle_disk_pool_partition
 		path = params[:path]
 		status = DiskPoolPartition.toggle_disk_pool_partition!(path)
 		if !status
-			render :partial => 'poolings/partition_checkbox', :locals => { :checked => false, :path => path }
+			render :partial => 'pooling/partition_checkbox', :locals => { :checked => false, :path => path }
 		else
-			render :partial => 'poolings/partition_checkbox', :locals => { :checked => true, :path => path }
+			render :partial => 'pooling/partition_checkbox', :locals => { :checked => true, :path => path }
 		end
 	end
 	private

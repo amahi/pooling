@@ -11,3 +11,4 @@
   greyhole_not_installed: "WARNING: Greyhole is not installed in this system!"
   pooled: Pooled
   pooling: Pooling
+  disk_pooling_no_shares: There are no shares currently available to add in storage pool

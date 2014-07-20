@@ -16,7 +16,7 @@
 # License along with this program; if not, write to the Amahi
 # team at http://www.amahi.org/ under "Contact Us."
 
-require "poolings/version"
-require "poolings/engine"
-require "poolings/configuration"
+require "pooling/version"
+require "pooling/engine"
+require "pooling/configuration"
 

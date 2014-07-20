@@ -38,6 +38,6 @@ class DiskPoolPartition < ActiveRecord::Base
 	protected
 
 	def regenerate_confguration
-		Poolings::Configuration.save_conf_file(DiskPoolPartition.all, DiskPoolShare.in_disk_pool)
+		Pooling::Configuration.save_conf_file(DiskPoolPartition.all, DiskPoolShare.in_disk_pool)
 	end
 end

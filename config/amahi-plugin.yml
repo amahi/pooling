@@ -1,7 +1,7 @@
 # human readable name (no localization supported yet)
-name: Poolings
+name: Pooling
 # class to be mounted
-class: Poolings
+class: Pooling
 # kind of plugin (so far we only support 'tab' plugins)
 kind: tab
 # root url where this plugin will be mounted

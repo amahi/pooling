@@ -1,0 +1,5 @@
+- id="part-#{path}"
+- disabled = (!Pooling::Configuration.enabled?) || path =~ /^\/media/
+- checked = checked && !disabled
+= tag "input", id: "cb-#{id}", class: "remote-check", type: "checkbox", checked: checked, disabled:disabled, data: { remote: true, url: pooling_engine.toggle_disk_pool_partition_path(:path=>path)}
+=spinner

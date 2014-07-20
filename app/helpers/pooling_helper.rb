@@ -1,4 +1,4 @@
-module PoolingsHelper
+module PoolingHelper
 	# put up warnings for / and /media mounts
 	def optional_warnings(path)
 		url = nil

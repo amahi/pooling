@@ -17,7 +17,7 @@
 require 'yaml'
 
 # Driver for Greyhole http://greyhole.pommepause.com/
-module Poolings
+module Pooling
 	class Configuration
 		SUFFIX = "gh"
 		USE_DOT_FILE = ".greyhole_uses_this"
