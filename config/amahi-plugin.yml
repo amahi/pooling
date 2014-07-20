@@ -1,5 +1,5 @@
 # human readable name (no localization supported yet)
-name: Pooling
+name: Drive Pooling
 # class to be mounted
 class: Pooling
 # kind of plugin (so far we only support 'tab' plugins)
