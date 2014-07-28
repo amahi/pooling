@@ -65,13 +65,13 @@ class PoolingController < ApplicationController
 	def selection
 		@partition_count = DiskPoolPartition.count
 		if @partition_count > 1
-			@selection = [[1, "-"]]
+			@selection = [["-",1]]
 			max = @partition_count - 1
 			1.upto(max) do |i|
-				@selection += [[i+1, "#{i}"]]
+				@selection += [["#{i}",i+1]]
 			end
 			# Last choice is for all drives, present and future! FIXME - put it in a constant/symbol
-			@selection += [[999,"Always Max"]]
+			@selection += [["Always Max", 999]]
 		end
 	end
 
