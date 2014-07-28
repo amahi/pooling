@@ -79,7 +79,6 @@ module Pooling
 		end
 
 		def self.share_conf(s)
-			Rails.logger.error "i am here"
 			name = s.name
 			pool = DiskPoolShare.where(:share_id=>s.id).first
 			if pool
