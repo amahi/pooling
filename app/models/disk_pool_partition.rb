@@ -4,9 +4,9 @@ class DiskPoolPartition < ActiveRecord::Base
 	DP_MIN_FREE_DEFAULT = 10
 	DP_MIN_FREE_ROOT = 20
 
-	after_save	:regenerate_confguration
-	after_create	:regenerate_confguration
-	after_destroy	:regenerate_confguration
+	after_save	:generate_config
+	after_create	:generate_config
+	after_destroy	:generate_config
 
 	def self.enabled?(path)
 		p = self.find_by_path(path)
@@ -37,7 +37,7 @@ class DiskPoolPartition < ActiveRecord::Base
 
 	protected
 
-	def regenerate_confguration
+	def generate_config
 		Pooling::Configuration.save_conf_file(DiskPoolPartition.all, DiskPoolShare.in_disk_pool)
 	end
 end
