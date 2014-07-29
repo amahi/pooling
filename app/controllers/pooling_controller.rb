@@ -90,6 +90,7 @@ class PoolingController < ApplicationController
 					return l.strip if l =~ /^Currently/
 				end
 			end
+			"Greyhole is currently not active"
 		rescue => e
 			"Unknown: #{e}"
 		end
