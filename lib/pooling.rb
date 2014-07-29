@@ -1,5 +1,3 @@
-
-
 # Amahi Home Server
 # Copyright (C) 2007-2013 Amahi Team
 #

@@ -25,15 +25,14 @@ module Pooling
 				"email_to" => "root",
 				"dir_selection_algorithm" => "most_available_space",
 				"db_engine" => "mysql",
-				#"db_path" => "/var/cache/greyhole.sqlite",
 				"db_host" => "localhost", "db_user" => "greyhole", "db_pass" => "greyhole", "db_name" => "greyhole",
 				"sticky_files" => "Music/",
 				"greyhole_log_file" => "/var/log/greyhole.log",
 				"df_cache_time" => "15",
 				"balance_modified_files" => "false", "log_memory_usage" => "false",
 				"other" => nil,
-				# FIXME-cpg: change from DEBUG at some point - added 4 '10
-				"log_level" => "DEBUG" }
+				"ignored_files" => '\..*\.[0-9a-zA-Z]{6} [0-9A-F]{8}\.tmp \.cprestoretmp.* .*/_UNPACK_.*',
+				"log_level" => "INFO" }
 		GH_DEFAULTS_FILE = "#{Rails.root}/config/greyhole.yml"
 
 		# generate and write GH conf file
@@ -80,9 +79,9 @@ module Pooling
 
 		def self.share_conf(s)
 			name = s.name
-			pool = DiskPoolShare.where(:share_id=>s.id).first
-			if pool
-				copies = pool.extra_copies
+			copies = s.disk_pool_copies
+			if copies == 999
+				copies = "max"
 			else
 				copies = 0
 			end

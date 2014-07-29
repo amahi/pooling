@@ -1,8 +1,6 @@
 class PoolingController < ApplicationController
 	before_filter :admin_required
 
-	DP_MIN_FREE_DEFAULT = 10
-	DP_MIN_FREE_ROOT = 20
 	def index
 		pl = PartitionUtils.new.info.to_a
 		@partitions = pl.delete_if do |p|
@@ -13,40 +11,33 @@ class PoolingController < ApplicationController
 			! @partitions.select{ |p| p[:path] == dpp.path }.empty?
 		end
 	end
+
 	def shares
 		@shares = Share.all
-		@pooled_shares = []
-		@shares.each do |share|
-			if DiskPoolShare.where(:share_id=>share.id).first
-				@pooled_shares << DiskPoolShare.where(:share_id=>share.id).first
-			else
-				@pooled_shares << nil
-			end
-		end
 		selection
 	end
+
 	def update_extra_copies
-		share_id = params[:id]
 		copies = params[:extra_copies]
-		share = Share.find(share_id)
-		pool = DiskPoolShare.where(:share_id=>share.id).first
-		pool.update_extra_copies(copies)
+		share = Share.find(params[:id])
+		if copies == "max"
+			share.disk_pool_copies = 999
+		else
+			share.disk_pool_copies = copies.to_i + 1
+		end
+		share.save && generate_gh_config
 		selection
 		render :partial => 'pooling/disk_pool_share', :locals => { :share => share , :pool => pool }
 	end
 
 	def toggle_share_pooling
-		share_id = params[:id]
-		share = Share.find(share_id)
-		pool = DiskPoolShare.where(:share_id=>share.id).first
-		if pool
-			pool.toggle_pooling!
+		share = Share.find(params[:id])
+		if share.disk_pool_copies > 0
+			share.disk_pool_copies = 0
 		else
-			pool = DiskPoolShare.new
-			pool.share = share
-			pool.save!
-			pool.toggle_pooling!
+			share.disk_pool_copies = 1
 		end
+		share.save && generate_gh_config
 		selection
 		render :partial => 'pooling/disk_pool_share', :locals => { :share => share , :pool => pool }
 	end
@@ -60,19 +51,24 @@ class PoolingController < ApplicationController
 			render :partial => 'pooling/partition_checkbox', :locals => { :checked => true, :path => path }
 		end
 	end
+
 	private
 
 	def selection
 		@partition_count = DiskPoolPartition.count
 		if @partition_count > 1
-			@selection = [["-",1]]
+			@selection = [["-", 0]]
 			max = @partition_count - 1
 			1.upto(max) do |i|
-				@selection += [["#{i}",i+1]]
+				@selection += [["#{i}", i]]
 			end
 			# Last choice is for all drives, present and future! FIXME - put it in a constant/symbol
-			@selection += [["Always Max", 999]]
+			@selection += [["Always Max", "max"]]
 		end
+	end
+
+	def generate_gh_config
+		Pooling::Configuration.save_conf_file(DiskPoolPartition.all, Share.where("disk_pool_copies > 0"))
 	end
 
 #	def settings
