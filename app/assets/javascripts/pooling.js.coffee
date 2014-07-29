@@ -8,7 +8,8 @@ $(document).on "ajax:beforeSend", ".btn-check-status", ->
       parent = $(this).parent()
       parent.find(".spinner").show "fast"
 
-$(document).on "ajax:success", ".btn-check-status", ->
+$(document).on "ajax:success", ".btn-check-status", (event, results) ->
 	$(this).show()
 	parent = $(this).parent()
 	parent.find(".spinner").hide "fast"
+	$("#gh_status").html(results.msg)

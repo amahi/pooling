@@ -1,18 +1,18 @@
 = stylesheet_link_tag 'pooling_style'
 -if @partition_count > 0 and Pooling::Configuration.enabled?
-	-if @shares.any?
-		.settings-table#shares-pool-table
-			table.settings.table
-		    	thead
-			        tr
-			          th.settings-col1.centered= t 'shares'
-			          th.settings-col1.centered= t 'disk_pooling'
-			          th.settings-col1.centered= t 'disk_pool_copies'
-				tbody
-					-@shares.each_with_index do |share,index|
-						tr[id="pool_share_#{share.id}"]
-							= render :partial => 'disk_pool_share', :locals => { share:share }
-	- else
+  -if @shares.any?
+    .settings-table#shares-pool-table
+      table.settings.table
+        thead
+          tr
+            th.settings-col1.centered= t 'shares'
+            th.settings-col1.centered= t 'disk_pooling'
+            th.settings-col1.centered= t 'disk_pool_copies'
+        tbody
+          -@shares.each_with_index do |share,index|
+            tr[id="pool_share_#{share.id}"]
+              = render :partial => 'disk_pool_share', :locals => { share:share }
+  - else
     fieldset
       div class="page-header"
         h2= t 'disk_pooling_no_shares'
@@ -20,4 +20,4 @@
 - else
   fieldset
     div class="page-header"
-		  h2= t 'disk_pooling_no_partitions'
+      h2= t 'disk_pooling_no_partitions'

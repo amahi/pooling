@@ -1,20 +1,18 @@
 = stylesheet_link_tag 'pooling_style'
 .status
-  .settings-stretcher
-    fieldset
-		legend
-			| &nbsp; #{t('pooling_global_status')} &nbsp;
+  fieldset
+	legend
+		| &nbsp; Greyhole &nbsp;
 
-	    .settings-fields
-          table.table
-            tr
-              td
-                label = t("status")
-              td
-                = @gh_status
-            tr
-            	td
-            		label = t('check')
-            	td
-                =link_to("Run FSCK", pooling_engine.run_fsck_path, :method => :get, :remote => true, :class => 'btnn btn btn-info btn-sm btn-check-status left-margin-10')
-            		=spinner
+    .settings-fields
+        table.table
+          tr
+            td
+              label = t("status")
+            td#gh_status
+              = @gh_status
+          tr
+          	td
+          	td
+          		=link_to("Run FSCK", pooling_engine.run_fsck_path, :method => :get, :remote => true, :class => 'btnn btn btn-info btn-sm btn-check-status left-margin-10')
+          		=spinner

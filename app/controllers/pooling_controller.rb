@@ -60,7 +60,8 @@ class PoolingController < ApplicationController
 		c = Command.new
 		c.submit("greyhole --fsck")
 		c.execute
-		render :json => {:status=>:ok}
+		sleep(2)
+		render :json => { status: :ok, msg: greyhole_status }
 	end
 
 	private
