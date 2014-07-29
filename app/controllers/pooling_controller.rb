@@ -27,7 +27,7 @@ class PoolingController < ApplicationController
 		end
 		share.save && generate_gh_config
 		selection
-		render :partial => 'pooling/disk_pool_share', :locals => { :share => share , :pool => pool }
+		render :partial => 'pooling/disk_pool_share', :locals => { :share => share }
 	end
 
 	def toggle_share_pooling
@@ -39,7 +39,7 @@ class PoolingController < ApplicationController
 		end
 		share.save && generate_gh_config
 		selection
-		render :partial => 'pooling/disk_pool_share', :locals => { :share => share  }
+		render :partial => 'pooling/disk_pool_share', :locals => { :share => share }
 	end
 
 	def toggle_disk_pool_partition
@@ -52,11 +52,10 @@ class PoolingController < ApplicationController
 		end
 	end
 
-	def status
-
-	end
-
-	def check_status
+	def run_fsck
+		c = Command.new
+		c.submit("greyhole --fsck")
+		c.execute
 		render :json => {:status=>:ok}
 	end
 
@@ -64,15 +63,14 @@ class PoolingController < ApplicationController
 
 	def selection
 		@partition_count = DiskPoolPartition.count
-		if @partition_count > 1
-			@selection = [["-", 0]]
-			max = @partition_count - 1
-			1.upto(max) do |i|
-				@selection += [["#{i}", i]]
-			end
-			# Last choice is for all drives, present and future! FIXME - put it in a constant/symbol
-			@selection += [["Always Max", "max"]]
+		return unless @partition_count > 1
+		@selection = [["-", 0]]
+		max = @partition_count - 1
+		1.upto(max) do |i|
+			@selection += [["#{i}", i]]
 		end
+		# Last choice is for all drives, present and future! FIXME - put it in a constant/symbol
+		@selection += [["Always Max", "max"]]
 	end
 
 	def generate_gh_config

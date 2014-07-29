@@ -12,14 +12,12 @@
 					-@shares.each_with_index do |share,index|
 						tr[id="pool_share_#{share.id}"]
 							= render :partial => 'disk_pool_share', :locals => { share:share }
-	-else
-		.no-share
-			div align="center"
-			  div align="left"
-			    h2= t 'disk_pooling_no_shares'
+	- else
+    fieldset
+      div class="page-header"
+        h2= t 'disk_pooling_no_shares'
 
 - else
-	.no-partition
-		div align="center"
-		  div align="left"
-		    h2= t 'disk_pooling_no_partitions'
+  fieldset
+    div class="page-header"
+		  h2= t 'disk_pooling_no_partitions'

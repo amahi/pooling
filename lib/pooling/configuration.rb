@@ -54,7 +54,7 @@ module Pooling
 				end
 			end
 			# reload greyhole, if it was running
-			c.submit("systemctl condrestart greyhole.service")
+			c.submit("systemctl condrestart amahi-greyhole.service")
 			c.execute
 		end
 
@@ -80,11 +80,7 @@ module Pooling
 		def self.share_conf(s)
 			name = s.name
 			copies = s.disk_pool_copies
-			if copies == 999
-				copies = "max"
-			else
-				copies = 0
-			end
+			copies = "max" if copies == 999
 			"num_copies[#{name}] = #{copies}\n"
 		end
 
