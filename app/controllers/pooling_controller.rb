@@ -39,7 +39,7 @@ class PoolingController < ApplicationController
 		end
 		share.save && generate_gh_config
 		selection
-		render :partial => 'pooling/disk_pool_share', :locals => { :share => share , :pool => pool }
+		render :partial => 'pooling/disk_pool_share', :locals => { :share => share  }
 	end
 
 	def toggle_disk_pool_partition

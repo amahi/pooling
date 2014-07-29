@@ -17,4 +17,6 @@
             	td
             		label
             			b = t('check')
-            	td = link_to(t("run_check"), pooling_engine.check_status_path, :method => :get, :remote => true, :class => 'btnn btn btn-info btn-sm left-margin-10')
+            	td
+            		= link_to(t("run_check"), pooling_engine.check_status_path, :method => :get, :remote => true, :class => 'btnn btn btn-info btn-sm btn-check-status left-margin-10')
+            		=spinner
