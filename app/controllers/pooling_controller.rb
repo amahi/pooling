@@ -52,6 +52,10 @@ class PoolingController < ApplicationController
 		end
 	end
 
+	def status
+		@gh_status = greyhole_status
+	end
+
 	def run_fsck
 		c = Command.new
 		c.submit("greyhole --fsck")
@@ -77,11 +81,17 @@ class PoolingController < ApplicationController
 		Pooling::Configuration.save_conf_file(DiskPoolPartition.all, Share.where("disk_pool_copies > 0"))
 	end
 
-#	def settings
-#		# do the settings page here
-#	end
+	def greyhole_status
+		begin
+			IO.popen("greyhole --status") do |f|
+				while !f.eof do
+					l = f.readline
+					return l.strip if l =~ /^Currently/
+				end
+			end
+		rescue => e
+			"Unknown: #{e}"
+		end
+	end
 
-#	def advanced
-#		# do the advanced settings page here
-#	end
 end
