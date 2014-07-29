@@ -1,3 +1,20 @@
-div.no-content
-  strong
-    | Status area
+= stylesheet_link_tag 'pooling_style'
+.status
+  .settings-stretcher
+    fieldset
+		legend
+			| &nbsp; #{t('pooling_global_status')}
+
+	    .settings-fields
+          table.table
+            tr
+              td
+                label
+                	b = t("status")
+              td
+                h3 = t('idle')
+            tr
+            	td
+            		label
+            			b = t('check')
+            	td = link_to(t("run_check"), pooling_engine.check_status_path, :method => :get, :remote => true, :class => 'btnn btn btn-info btn-sm left-margin-10')

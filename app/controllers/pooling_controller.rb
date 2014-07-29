@@ -52,6 +52,14 @@ class PoolingController < ApplicationController
 		end
 	end
 
+	def status
+
+	end
+
+	def check_status
+		render :json => {:status=>:ok}
+	end
+
 	private
 
 	def selection
