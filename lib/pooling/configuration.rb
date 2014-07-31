@@ -21,18 +21,22 @@ module Pooling
 	class Configuration
 		SUFFIX = "gh"
 		USE_DOT_FILE = ".greyhole_uses_this"
-		GH_DEFAULTS = { "delete_moves_to_attic" => "true",
+
+		GH_DEFAULTS = { "delete_moves_to_trash" => "yes",
+				"modified_moves_to_trash" => "no",
 				"email_to" => "root",
-				"dir_selection_algorithm" => "most_available_space",
+				"drive_selection_algorithm" => "most_available_space",
 				"db_engine" => "mysql",
 				"db_host" => "localhost", "db_user" => "greyhole", "db_pass" => "greyhole", "db_name" => "greyhole",
-				"sticky_files" => "Music/",
+				"sticky_files" => { "Music/" => nil },
 				"greyhole_log_file" => "/var/log/greyhole.log",
 				"df_cache_time" => "15",
-				"balance_modified_files" => "false", "log_memory_usage" => "false",
-				"other" => nil,
-				"ignored_files" => '\..*\.[0-9a-zA-Z]{6} [0-9A-F]{8}\.tmp \.cprestoretmp.* .*/_UNPACK_.*',
-				"log_level" => "INFO" }
+				"log_memory_usage" => "no",
+				"check_for_open_files" => "yes",
+				"ignored_files" => '(\..*\.[0-9a-zA-Z]{6}|[0-9A-F]{8}\.tmp|\.cprestoretmp.*)',
+				"ignored_folders" => '.*/_UNPACK_.*',
+				"log_level" => "INFO",
+				"other" => nil }
 		GH_DEFAULTS_FILE = "#{Rails.root}/config/greyhole.yml"
 
 		# generate and write GH conf file
@@ -106,27 +110,24 @@ module Pooling
 				"# Set the defaults (carefully) in #{GH_DEFAULTS_FILE}",
 				"db_engine = #{gh['db_engine']}",
 				((gh['db_engine'] == 'sqlite') ? "db_path = #{gh['db_path']}" : mysql)]
-			# rest of settings
-			rest = ["balance_modified_files", "email_to", "greyhole_log_file", "log_level",
-				"log_memory_usage", "dir_selection_algorithm", "df_cache_time",
-				"delete_moves_to_attic"].map{|s| "#{s} = #{gh[s]}" }
-			settings << rest
+			gh.delete_if { |k, _| k =~ /^db_/ }
 			settings << sticky_files_to_s(gh["sticky_files"])
 			if gh['other']
 				settings << gh['other']
 				settings << ['']
 			end
+			gh.delete_if { |k, _| k =~ /^(sticky_files|other)$/ }
+			# save the rest of the settings above
+			gh.each do |k, v|
+				settings << ["#{k} = #{v}"]
+			end
+			settings << ["", ""]
 			settings.join "\n"
 		end
 
 		def self.sticky_files_to_s(data)
-			if data.class == String
-				# FIXME: this is still the old format - aug 1 20010
-				# can be deprecated in amahi 6!
-				return ["sticky_files = #{data}"]
-			end
 			# new format!
-			res = ["# sticky_files and stick_into options are nested - see http://wiki.amahi.org/index.php/Greyhole#Greyhole_advanced_options"]
+			res = []
 			data.map do |entry|
 				pattern = entry[0]
 				into = entry[1]
