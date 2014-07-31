@@ -121,6 +121,7 @@ module Pooling
 			gh.each do |k, v|
 				settings << ["#{k} = #{v}"]
 			end
+			settings << ["", ""]
 			settings.join "\n"
 		end
 
