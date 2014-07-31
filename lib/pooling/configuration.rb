@@ -31,7 +31,8 @@ module Pooling
 				"df_cache_time" => "15",
 				"balance_modified_files" => "false", "log_memory_usage" => "false",
 				"other" => nil,
-				"ignored_files" => '\..*\.[0-9a-zA-Z]{6} [0-9A-F]{8}\.tmp \.cprestoretmp.* .*/_UNPACK_.*',
+				"ignored_files" => '(\..*\.[0-9a-zA-Z]{6}|[0-9A-F]{8}\.tmp|\.cprestoretmp.*)',
+				"ignored_folders" => '.*/_UNPACK_.*',
 				"log_level" => "INFO" }
 		GH_DEFAULTS_FILE = "#{Rails.root}/config/greyhole.yml"
 
