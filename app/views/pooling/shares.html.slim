@@ -1,13 +1,13 @@
 = stylesheet_link_tag 'pooling_style'
 -if @partition_count > 0 and Pooling::Configuration.enabled?
   -if @shares.any?
-    .settings-table#shares-pool-table
+    .settings-table#shares-pool-table[style="width:60%"]
       table.settings.table
         thead
           tr
             th.settings-col1.centered= t 'shares'
-            th.settings-col1.centered= t 'disk_pooling'
-            th.settings-col1.centered= t 'disk_pool_copies'
+            th.centered= t 'disk_pooling'
+            th.centered= t 'disk_pool_copies'
         tbody
           -@shares.each_with_index do |share,index|
             tr[id="pool_share_#{share.id}"]

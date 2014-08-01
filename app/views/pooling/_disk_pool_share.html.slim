@@ -1,13 +1,14 @@
 - checked = share.disk_pool_copies > 0 ? true : false
-td.settings-col1.shares-col1
+- selected = share.disk_pool_copies == 999 ? "max" : share.disk_pool_copies - 1
+td.settings-col1
   strong = share.name
 td.centered
 	= tag "input", id: "share_#{share.id}", class: "remote-check pool-share", type:"checkbox", checked: checked, data: { remote: true, url: pooling_engine.toggle_share_pooling_path(:id => share.id)}
 	=spinner
 td.centered
 	-if @partition_count > 1 and checked
-        -num_copies_list = options_for_select(@selection, share.disk_pool_copies - 1 )
-        = select_tag 'extra_copies', num_copies_list,
+        -num_copies_list = options_for_select(@selection, selected)
+        = select_tag "extra_copies_#{share.id}", num_copies_list,
             data: { remote: true, url: pooling_engine.update_extra_copies_path(:id => share.id)},
             class: 'remote-select form-control'
         = spinner
