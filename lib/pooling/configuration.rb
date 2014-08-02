@@ -97,7 +97,10 @@ module Pooling
 		end
 
 		def self.header
-			gh = GH_DEFAULTS
+			# we have to use a dup here because the changes in gh affect the constant and apparently
+			# passenger does not reload the constant on future requests or maybe a worker was
+			# was not initialized properly. in any case, modifying a constant is not good form
+			gh = GH_DEFAULTS.dup
 			begin
 				gh.merge!(YAML::load(File.open(GH_DEFAULTS_FILE))) if File.exists?(GH_DEFAULTS_FILE)
 			rescue
@@ -128,6 +131,7 @@ module Pooling
 		def self.sticky_files_to_s(data)
 			# new format!
 			res = []
+			return ret unless data
 			data.map do |entry|
 				pattern = entry[0]
 				into = entry[1]
