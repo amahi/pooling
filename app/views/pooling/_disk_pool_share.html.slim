@@ -8,7 +8,7 @@ td.centered
 td.centered
 	-if @partition_count > 1 and checked
         -num_copies_list = options_for_select(@selection, selected)
-        = select_tag "extra_copies_#{share.id}", num_copies_list,
+        = select_tag "extra_copies", num_copies_list,
             data: { remote: true, url: pooling_engine.update_extra_copies_path(:id => share.id)},
-            class: 'remote-select form-control'
+            class: 'remote-select form-control', :id=> "extra_copies_#{share.id}"
         = spinner
