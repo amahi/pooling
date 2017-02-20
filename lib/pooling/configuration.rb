@@ -89,7 +89,7 @@ module Pooling
 		end
 
 		def self.partition_conf(p)
-			"storage_pool_directory = #{part_path p}, min_free: #{p[:minimum_free]}gb\n"
+			"storage_pool_drive = #{part_path p}, min_free: #{p[:minimum_free]}gb\n"
 		end
 
 		def self.part_path(p)
