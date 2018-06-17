@@ -1,5 +1,4 @@
 class DiskPoolPartition < ActiveRecord::Base
-	attr_accessible :minimum_free, :path
 
 	DP_MIN_FREE_DEFAULT = 10
 	DP_MIN_FREE_ROOT = 20
